@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>校园生活 · 校园生活</title>
+  <meta name="description" content="一个关于校园生活的单页网站：社团、活动、学习、食堂与校园风景。"/>
+  <style>
+    :root{
+      --bg:#0b1020;
+      --card:#0f1733cc;
+      --card2:#0e1530;
+      --text:#e8ecff;
+      --muted:#b9c2ffcc;
+      --brand:#7c5cff;
+      --brand2:#2ee6a6;
+      --line:#26305a;
+      --shadow: 0 12px 30px rgba(0,0,0,.35);
+      --radius: 18px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text);
+      background:
+        radial-gradient(1200px 800px at 10% 10%, rgba(124,92,255,.35), transparent 60%),
+        radial-gradient(900px 700px at 85% 25%, rgba(46,230,166,.18), transparent 60%),
+        radial-gradient(900px 800px at 60% 90%, rgba(255,153,102,.15), transparent 60%),
+        linear-gradient(180deg, #070a14, var(--bg));
+      overflow-x:hidden;
+    }
+    a{color:inherit; text-decoration:none}
+    .container{max-width:1100px; margin:0 auto; padding:0 18px}
+    header{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(10px);
+      background: linear-gradient(180deg, rgba(7,10,20,.9), rgba(7,10,20,.55));
+      border-bottom: 1px solid rgba(38,48,90,.55);
+    }
+    nav{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 0;
+    }
+    .logo{
+      display:flex; gap:10px; align-items:center; font-weight:800;
+      letter-spacing:.3px;
+    }
+    .badge{
+      width:34px; height:34px; border-radius:10px;
+      background: conic-gradient(from 180deg, var(--brand), var(--brand2), #ff9966, var(--brand));
+      box-shadow: 0 0 0 3px rgba(124,92,255,.16);
+    }
+    .navlinks{display:flex; gap:18px; align-items:center; flex-wrap:wrap}
+    .navlinks a{
+      font-size:14px; color:var(--muted); padding:8px 10px; border-radius:999px;
+      border:1px solid transparent;
+      transition: .2s ease;
+    }
+    .navlinks a:hover{
+      color:var(--text);
+      border-color: rgba(124,92,255,.35);
+      background: rgba(124,92,255,.10);
+    }
+    .cta{
+      display:flex; gap:10px; align-items:center;
+    }
+    .btn{
+      padding:10px 14px; border-radius:999px; border:1px solid rgba(124,92,255,.45);
+      background: rgba(124,92,255,.16);
+      color:var(--text);
+      font-weight:700; font-size:13px;
+      cursor:pointer;
+      transition:.2s ease;
+      box-shadow: 0 10px 22px rgba(124,92,255,.12);
+    }
+    .btn:hover{transform: translateY(-1px); background: rgba(124,92,255,.22)}
+    .btn.ghost{
+      border-color: rgba(46,230,166,.35);
+      background: rgba(46,230,166,.10);
+      box-shadow: 0 10px 22px rgba(46,230,166,.10);
+    }
+    .btn.ghost:hover{background: rgba(46,230,166,.16)}
+    .hero{
+      padding:54px 0 24px;
+      position:relative;
+    }
+    .hero-grid{
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap:22px;
+      align-items:stretch;
+    }
+    @media (max-width: 920px){
+      .hero-grid{grid-template-columns:1fr; }
+    }
+    .h-card{
+      border: 1px solid rgba(38,48,90,.7);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(15,23,51,.65), rgba(14,21,48,.85));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .hero-left{padding:26px 24px 22px; position:relative}
+    .kicker{
+      display:inline-flex; align-items:center; gap:10px;
+      padding:8px 12px; border-radius:999px;
+      background: rgba(46,230,166,.12);
+      border:1px solid rgba(46,230,166,.35);
+      color: #c9fff1;
+      font-weight:700;
+      font-size:13px;
+    }
+    .dot{width:8px; height:8px; border-radius:999px; background:var(--brand2); box-shadow:0 0 0 4px rgba(46,230,166,.12)}
+    h1{
+      margin:14px 0 10px;
+      font-size:44px;
+      line-height:1.05;
+      letter-spacing:-.6px;
+    }
+    @media (max-width: 520px){ h1{font-size:34px} }
+    .sub{
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.7;
+      max-width: 52ch;
+      margin-bottom:18px;
+    }
+    .chips{display:flex; gap:10px; flex-wrap:wrap; margin:16px 0 12px}
+    .chip{
+      font-size:12px; color:var(--muted);
+      padding:7px 10px; border-radius:999px;
+      border:1px solid rgba(38,48,90,.8);
+      background: rgba(11,16,32,.35);
+    }
+    .hero-actions{display:flex; gap:12px; flex-wrap:wrap; margin-top: 14px}
+    .mini{
+      display:flex; gap:12px; margin-top:18px; flex-wrap:wrap
+    }
+    .stat{
+      flex:1; min-width: 160px;
+      padding:14px 14px;
+      border-radius: 14px;
+      background: rgba(11,16,32,.35);
+      border:1px solid rgba(38,48,90,.75);
+    }
+    .stat b{font-size:18px}
+    .stat div{color:var(--muted); margin-top:6px; font-size:12px; line-height:1.4}
+    .hero-right{
+      display:grid; grid-template-rows: 1.1fr .9fr; gap:14px;
+      padding:0;
+    }
+    .photo{
+      position:relative;
+      min-height: 210px;
+      background:
+        linear-gradient(180deg, rgba(7,10,20,.10), rgba(7,10,20,.70)),
+        url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1400&q=70') center/cover no-repeat;
+    }
+    .photo::after{
+      content:"";
+      position:absolute; inset:0;
+      background: radial-gradient(600px 380px at 20% 30%, rgba(124,92,255,.25), transparent 60%);
+      pointer-events:none;
+    }
+    .photo .label{
+      position:absolute; left:16px; bottom:14px;
+      padding:10px 12px;
+      border-radius: 14px;
+      background: rgba(15,23,51,.70);
+      border:1px solid rgba(38,48,90,.7);
+      color:var(--text);
+      font-weight:800; font-size:13px;
+      backdrop-filter: blur(10px);
+      display:inline-flex; gap:8px; align-items:center;
+    }
+    .label svg{opacity:.9}
+    .quick{
+      padding:16px 16px 14px;
+      display:flex; flex-direction:column; gap:10px;
+    }
+    .searchbox{
+      display:flex; gap:10px; align-items:center;
+      padding:12px 12px;
+      border-radius: 14px;
+      background: rgba(11,16,32,.35);
+      border:1px solid rgba(38,48,90,.75);
+    }
+    .searchbox input{
+      background: transparent; border:none; outline:none;
+      color:var(--text); width:100%;
+      font-size:14px;
+    }
+    .hint{color:var(--muted); font-size:12px; line-height:1.5}
+    section{padding: 18px 0}
+    .section-title{
+      display:flex; align-items:flex-end; justify-content:space-between;
+      gap:14px; flex-wrap:wrap;
+      margin: 18px 0 12px;
+    }
+    .section-title h2{margin:0; font-size:22px; letter-spacing:-.2px}
+    .section-title p{margin:0; color:var(--muted); font-size:13px}
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+    }
+    .card{
+      grid-column: span 4;
+      padding:16px 16px 14px;
+      border-radius: var(--radius);
+      background: rgba(15,23,51,.55);
+      border:1px solid rgba(38,48,90,.7);
+      box-shadow: 0 10px 22px rgba(0,0,0,.25);
+      transition:.2s ease;
+      min-height: 150px;
+      position:relative;
+      overflow:hidden;
+    }
+    .card:hover{transform: translateY(-2px); border-color: rgba(124,92,255,.45)}
+    .card .icon{
+      width:40px; height:40px; border-radius: 14px;
+      display:grid; place-items:center;
+      background: rgba(124,92,255,.18);
+      border:1px solid rgba(124,92,255,.35);
+      margin-bottom:10px;
+    }
+    .card h3{margin:0 0 6px; font-size:16px}
+    .card p{margin:0; color:var(--muted); font-size:13px; line-height:1.6}
+    @media (max-width: 920px){
+      .card{grid-column: span 6;}
+    }
+    @media (max-width: 560px){
+      .card{grid-column: span 12;}
+    }
+
+    /* events */
+    .events{
+      grid-column: span 7;
+      padding:16px;
+      border-radius: var(--radius);
+      background: rgba(15,23,51,.55);
+      border:1px solid rgba(38,48,90,.7);
+      box-shadow: 0 10px 22px rgba(0,0,0,.25);
+    }
+    .events ul{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:10px}
+    .event{
+      display:flex; gap:12px; align-items:flex-start;
+      padding:12px 12px;
+      border-radius: 14px;
+      border:1px solid rgba(38,48,90,.75);
+      background: rgba(11,16,32,.35);
+    }
+    .date{
+      min-width: 66px;
+      padding:10px 10px;
+      border-radius: 14px;
+      background: rgba(46,230,166,.12);
+      border:1px solid rgba(46,230,166,.35);
+      text-align:center;
+      font-weight:900;
+      line-height:1.05;
+    }
+    .date small{display:block; font-size:11px; color:#c9fff1; opacity:.95; font-weight:800}
+    .date span{display:block; font-size:18px}
+    .event b{display:block; margin-bottom:4px}
+    .event .meta{color:var(--muted); font-size:12px; line-height:1.5}
+
+    .side{
+      grid-column: span 5;
+      border-radius: var(--radius);
+      border:1px solid rgba(38,48,90,.7);
+      background: rgba(15,23,51,.55);
+      box-shadow: 0 10px 22px rgba(0,0,0,.25);
+      overflow:hidden;
+      position:relative;
+    }
+    .side .img{
+      height: 180px;
+      background:
+        linear-gradient(180deg, rgba(7,10,20,.15), rgba(7,10,20,.75)),
+        url('https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1400&q=70') center/cover no-repeat;
+    }
+    .side .body{padding:14px 16px 16px}
+    .side h3{margin:0 0 6px}
+    .side p{margin:0; color:var(--muted); font-size:13px; line-height:1.6}
+    .pillrow{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px}
+    .pill{
+      font-size:12px; color:var(--muted);
+      padding:7px 10px; border-radius:999px;
+      border:1px solid rgba(38,48,90,.8);
+      background: rgba(11,16,32,.35);
+    }
+
+    /* gallery */
+    .gallery{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 12px;
+    }
+    .shot{
+      grid-column: span 3;
+      height: 170px;
+      border-radius: 18px;
+      border: 1px solid rgba(38,48,90,.7);
+      background-size: cover;
+      background-position: center;
+      position:relative;
+      overflow:hidden;
+      cursor:pointer;
+      transition:.2s ease;
+    }
+    .shot:hover{transform: translateY(-2px); border-color: rgba(46,230,166,.45)}
+    .shot::after{
+      content:"";
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, transparent 30%, rgba(7,10,20,.80));
+    }
+    .shot span{
+      position:absolute; left:12px; bottom:10px;
+      color: rgba(232,236,255,.92);
+      font-weight:800; font-size:12px;
+      letter-spacing:.2px;
+    }
+    @media (max-width: 920px){ .shot{grid-column: span 4} }
+    @media (max-width: 640px){ .shot{grid-column: span 6} }
+    @media (max-width: 420px){ .shot{grid-column: span 12} }
+
+    /* modal */
+    .modal{
+      position:fixed; inset:0; display:none; place-items:center;
+      background: rgba(0,0,0,.60);
+      z-index: 80;
+      padding: 18px;
+    }
+    .modal.open{display:grid}
+    .modal .box{
+      width:min(980px, 100%);
+      border-radius: 22px;
+      border: 1px solid rgba(38,48,90,.85);
+      background: rgba(11,16,32,.75);
+      box-shadow: 0 24px 80px rgba(0,0,0,.55);
+      overflow:hidden;
+      backdrop-filter: blur(14px);
+    }
+    .modal .top{
+      display:flex; justify-content:space-between; align-items:center;
+      padding: 12px 14px;
+      border-bottom:1px solid rgba(38,48,90,.65);
+    }
+    .modal .top b{font-size:13px}
+    .x{
+      width:36px; height:36px; border-radius: 12px;
+      border:1px solid rgba(38,48,90,.8);
+      background: rgba(15,23,51,.55);
+      color:var(--text);
+      cursor:pointer;
+    }
+    .modal .img{
+      width:100%;
+      height: min(62vh, 520px);
+      background-size: cover;
+      background-position: center;
+    }
+    .modal .cap{
+      padding: 12px 14px 14px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    footer{
+      padding: 26px 0 34px;
+      color: var(--muted);
+      border-top: 1px solid rgba(38,48,90,.55);
+      margin-top: 16px;
+    }
+    .foot-grid{
+      display:flex; justify-content:space-between; gap:18px; flex-wrap:wrap;
+      align-items:center;
+    }
+    .small{font-size:12px}
+
+    /* subtle float */
+    .floaty{
+      position:absolute; right:-40px; top:-40px;
+      width: 220px; height: 220px;
+      background: radial-gradient(circle at 30% 30%, rgba(46,230,166,.35), transparent 62%),
+                  radial-gradient(circle at 70% 70%, rgba(124,92,255,.40), transparent 58%);
+      filter: blur(1px);
+      transform: rotate(12deg);
+      opacity:.9;
+      pointer-events:none;
+    }
+
+    /* reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      .card, .shot, .btn{transition:none}
+      .card:hover, .shot:hover, .btn:hover{transform:none}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo" aria-label="站点标志">
+          <div class="badge" aria-hidden="true"></div>
+          <div>
+            <div style="font-size:14px; opacity:.92;">校园生活</div>
+            <div style="font-size:12px; color:var(--muted); font-weight:600;">校园生活主页</div>
+          </div>
+        </div>
+        <div class="navlinks" role="navigation" aria-label="主导航">
+          <a href="#features">生活速览</a>
+          <a href="#events">活动日历</a>
+          <a href="#gallery">校园影集</a>
+                  </div>
+        <div class="cta">
+          <button class="btn ghost" id="randomTipBtn" title="随机一条校园小贴士">🎲 小贴士</button>
+          <a class="btn" href="#events">查看活动</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <div class="hero-grid">
+          <div class="h-card hero-left">
+            <div class="floaty" aria-hidden="true"></div>
+            <div class="kicker"><span class="dot" aria-hidden="true"></span>今日校园心情：把平凡过成闪光</div>
+            <h1>把校园生活，做成一张会发光的「名片」</h1>
+            <p class="sub">
+              这里收录了社团、活动、学习与食堂的日常灵感。你可以用它做课程作业、社团展示页，或当作个人作品集的一部分。
+            </p>
+
+            <div class="chips" aria-label="关键词">
+              <span class="chip">📚 自习效率</span>
+              <span class="chip">🎭 社团与兴趣</span>
+              <span class="chip">🏀 运动与健康</span>
+              <span class="chip">🍜 食堂雷达</span>
+              <span class="chip">🌙 夜跑与晚风</span>
+            </div>
+
+            <div class="hero-actions">
+              <a class="btn" href="#gallery">先逛影集</a>
+              <a class="btn ghost" href="#features">了解更多</a>
+            </div>
+
+            <div class="mini" aria-label="亮点数据">
+              <div class="stat">
+                <b id="stat1">3</b> 个推荐路线
+                <div>晨跑 / 午后自习 / 夜间散步，随时切换。</div>
+              </div>
+              <div class="stat">
+                <b id="stat2">8</b> 条校园小贴士
+                <div>从抢座位到找自习室的「软技能」。</div>
+              </div>
+              <div class="stat">
+                <b id="stat3">12</b> 张照片
+                <div>校园风景 + 生活瞬间，一键浏览。</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-right">
+            <div class="h-card photo" aria-label="校园主图">
+              <div class="label">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M12 2L2 7l10 5 10-5-10-5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                  <path d="M2 17l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                  <path d="M2 12l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                </svg>
+                校园学习区 · Study Zone
+              </div>
+            </div>
+
+            <div class="h-card quick">
+              <div class="searchbox" role="search">
+                <span aria-hidden="true">🔎</span>
+                <input id="searchInput" placeholder="搜索：社团 / 自习 / 食堂 / 运动…" />
+              </div>
+              <div class="hint" id="searchHint">
+                试试输入：<b>自习</b>、<b>社团</b>、<b>晚风</b> 或 <b>食堂</b>。下面的卡片会高亮匹配内容。
+              </div>
+              <div class="hint" style="opacity:.9">
+                ✅ 本页面为纯前端单页：可直接打开、也可作为作业提交。  
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="container">
+        <div class="section-title">
+          <div>
+            <h2>生活速览</h2>
+            <p>用四张卡片，快速把校园生活讲清楚。</p>
+          </div>
+          <p class="small">提示：上方搜索框可高亮匹配内容</p>
+        </div>
+
+        <div class="grid" id="featureGrid">
+          <article class="card" data-tags="自习 学习 图书馆 课程">
+            <div class="icon" aria-hidden="true">📚</div>
+            <h3>学习 & 自习</h3>
+            <p>把大任务拆成 25 分钟的小块；把复习变成「可完成的清单」，你会更轻松更有掌控感。</p>
+          </article>
+
+          <article class="card" data-tags="社团 兴趣 音乐 朋友">
+            <div class="icon" aria-hidden="true">🎭</div>
+            <h3>社团 & 兴趣</h3>
+            <p>新学期试着加入一个社团：摄影、舞蹈、辩论或志愿者。你会更快找到同频的朋友。</p>
+          </article>
+
+          <article class="card" data-tags="食堂 美食 咖啡 奶茶">
+            <div class="icon" aria-hidden="true">🍜</div>
+            <h3>食堂 & 美食</h3>
+            <p>把「常吃的三家」做成备选清单：一份稳定、一份冒险、一份省钱。幸福感会更可持续。</p>
+          </article>
+
+          <article class="card" data-tags="运动 夜跑 篮球 健身 健康">
+            <div class="icon" aria-hidden="true">🏀</div>
+            <h3>运动 & 健康</h3>
+            <p>每周两次轻运动就能明显改善状态：晚饭后散步、操场慢跑、或跟朋友打一场球。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="events">
+      <div class="container">
+        <div class="section-title">
+          <div>
+            <h2>活动日历</h2>
+            <p>近期校园活动与日程一览。</p>
+          </div>
+          <p class="small">点击「🎲 小贴士」获取灵感</p>
+        </div>
+
+        <div class="grid">
+          <div class="events" aria-label="活动列表">
+            <ul id="eventList"></ul>
+          </div>
+
+          <aside class="side" aria-label="推荐路线">
+            <div class="img"></div>
+            <div class="body">
+              <h3>三段式校园路线</h3>
+              <p>把一天拆成三段：给学习留空间，也给生活留呼吸。适合做作业展示的「校园生活模型」。</p>
+              <div class="pillrow">
+                <span class="pill">🌤 晨间：操场慢跑</span>
+                <span class="pill">☕ 午后：图书馆自习</span>
+                <span class="pill">🌙 夜晚：校园散步</span>
+              </div>
+              <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
+                <button class="btn" id="addEventBtn">+ 添加示例活动</button>
+                <button class="btn ghost" id="resetEventBtn">↺ 重置列表</button>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section id="gallery">
+      <div class="container">
+        <div class="section-title">
+          <div>
+            <h2>校园影集</h2>
+            <p>点击照片可放大预览（图片来自 Unsplash）。</p>
+          </div>
+          <p class="small">共 <span id="galleryCount">12</span> 张</p>
+        </div>
+
+        <div class="gallery" id="galleryGrid"></div>
+      </div>
+    </section>
+
+<div class="modal" id="modal" aria-hidden="true" role="dialog" aria-label="图片预览弹窗">
+      <div class="box">
+        <div class="top">
+          <b id="modalTitle">图片预览</b>
+          <button class="x" id="closeModalBtn" aria-label="关闭">✕</button>
+        </div>
+        <div class="img" id="modalImg"></div>
+        <div class="cap" id="modalCap"></div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="foot-grid">
+        <div class="logo">
+          <div class="badge" aria-hidden="true"></div>
+          <div>
+            <div style="font-size:13px; font-weight:900;">校园生活</div>
+            <div class="small">校园生活主题展示页</div>
+          </div>
+        </div>
+        <div class="small">
+          © <span id="year"></span> · 校园生活 · 每日灵感
+          <span style="opacity:.85">（图片：Unsplash）</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const tips = [
+      "自习想不动？先做 5 分钟最简单的那一步：打开课本、写下题号。",
+      "社团面试紧张：准备 30 秒自我介绍 + 1 个你最想学到的技能。",
+      "食堂排队太久：避开 11:30-12:10 & 17:30-18:10 的高峰段。",
+      "想交朋友：把“你来自哪里？”换成“你最近在追什么/学什么？”",
+      "记单词别硬背：用 3 个例句把词放进生活场景里。",
+      "晨跑不需要狠：坚持 10 分钟就赢过大多数“计划型选手”。",
+      "课多疲惫：午后 15 分钟闭眼休息，比刷手机更解压。",
+      "作业写不下去：先写“目录/要点”，再填内容，速度会翻倍。"
+    ];
+
+    const baseEvents = [
+      { m:"12月", d:"16", title:"期末复习共学夜", meta:"地点：图书馆自习区 · 主题：高效复盘 + 互相打气" },
+      { m:"12月", d:"18", title:"社团招新展示台", meta:"地点：主干道广场 · 摄影/音乐/志愿者等" },
+      { m:"12月", d:"21", title:"校园跑团夜跑", meta:"地点：操场入口 · 3km/5km 自由选择" },
+      { m:"12月", d:"24", title:"冬日市集与明信片交换", meta:"地点：食堂门口 · 小礼物/手作/祝福卡" },
+      { m:"12月", d:"28", title:"学期总结分享会", meta:"地点：教学楼 A101 · 经验/踩坑/建议" }
+    ];
+
+    const extraEventPool = [
+      { m:"1月", d:"03", title:"新年计划工作坊", meta:"地点：学生活动中心 · 目标拆解 + 习惯跟踪" },
+      { m:"1月", d:"05", title:"摄影社外拍：傍晚校园", meta:"地点：钟楼集合 · 适合新手入门" },
+      { m:"1月", d:"08", title:"篮球友谊赛", meta:"地点：体育馆 · 观赛/助威也欢迎" },
+      { m:"1月", d:"10", title:"英语角：电影台词朗读", meta:"地点：咖啡吧 · 轻松聊天" }
+    ];
+
+    const shots = [
+      { t:"图书馆光影", u:"https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=1400&q=70", c:"安静的角落，总能让思绪变得清晰。" },
+      { t:"操场晚风", u:"https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=1400&q=70", c:"跑一圈，把烦恼交给风。" },
+      { t:"课堂笔记", u:"https://images.unsplash.com/photo-1529070538774-1843cb3265df?auto=format&fit=crop&w=1400&q=70", c:"把知识写下来，就是在和未来的自己对话。" },
+      { t:"校园小路", u:"https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1400&q=70", c:"偶遇和告别，都发生在路上。" },
+      { t:"午后咖啡", u:"https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=1400&q=70", c:"给自己一个小小的能量补给。" },
+      { t:"社团舞台", u:"https://images.unsplash.com/photo-1519682577862-22b62b24e493?auto=format&fit=crop&w=1400&q=70", c:"勇敢上台的那一刻，你已经赢了。" },
+      { t:"团队合作", u:"https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1400&q=70", c:"一起做事的日子，会变成最暖的回忆。" },
+      { t:"宿舍日常", u:"https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=1400&q=70", c:"把小空间过成自己的宇宙。" },
+      { t:"雨后操场", u:"https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=1400&q=70", c:"雨停之后，空气里全是新的开始。" },
+      { t:"食堂美食", u:"https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?auto=format&fit=crop&w=1400&q=70", c:"今天也要好好吃饭。" },
+      { t:"夕阳建筑", u:"https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1400&q=70", c:"金色时刻，校园像电影一样。" },
+      { t:"夜读时刻", u:"https://images.unsplash.com/photo-1455885666463-8c5e4d2f6b85?auto=format&fit=crop&w=1400&q=70", c:"灯下的专注，会悄悄改变你。" }
+    ];
+
+    const $ = (sel) => document.querySelector(sel);
+    const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+
+    function renderEvents(list){
+      const ul = $("#eventList");
+      ul.innerHTML = "";
+      list.forEach(ev => {
+        const li = document.createElement("li");
+        li.className = "event";
+        li.setAttribute("data-tags", (ev.title + " " + ev.meta).toLowerCase());
+        li.innerHTML = `
+          <div class="date"><small>${ev.m}</small><span>${ev.d}</span></div>
+          <div>
+            <b>${ev.title}</b>
+            <div class="meta">${ev.meta}</div>
+          </div>
+        `;
+        ul.appendChild(li);
+      });
+    }
+
+    function renderGallery(){
+      const grid = $("#galleryGrid");
+      grid.innerHTML = "";
+      $("#galleryCount").textContent = shots.length.toString();
+      shots.forEach((s, idx) => {
+        const div = document.createElement("div");
+        div.className = "shot";
+        div.style.backgroundImage = `linear-gradient(180deg, rgba(7,10,20,.08), rgba(7,10,20,.55)), url('${s.u}')`;
+        div.setAttribute("role", "button");
+        div.setAttribute("tabindex", "0");
+        div.setAttribute("aria-label", "打开图片：" + s.t);
+        div.innerHTML = `<span>#${String(idx+1).padStart(2,"0")} · ${s.t}</span>`;
+        div.addEventListener("click", () => openModal(s));
+        div.addEventListener("keydown", (e) => {
+          if(e.key === "Enter" || e.key === " ") openModal(s);
+        });
+        grid.appendChild(div);
+      });
+    }
+
+    function openModal(shot){
+      const modal = $("#modal");
+      $("#modalTitle").textContent = shot.t;
+      $("#modalImg").style.backgroundImage = `url('${shot.u}')`;
+      $("#modalCap").textContent = shot.c;
+      modal.classList.add("open");
+      modal.setAttribute("aria-hidden","false");
+      document.body.style.overflow = "hidden";
+    }
+    function closeModal(){
+      const modal = $("#modal");
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden","true");
+      document.body.style.overflow = "";
+    }
+
+    function setHighlight(query){
+      const q = query.trim().toLowerCase();
+      const cards = $$("#featureGrid .card");
+      const events = $$("#eventList .event");
+
+      const set = (el, hit) => {
+        el.style.outline = hit ? "2px solid rgba(46,230,166,.65)" : "none";
+        el.style.boxShadow = hit ? "0 0 0 6px rgba(46,230,166,.12), 0 10px 22px rgba(0,0,0,.25)" : "";
+      };
+
+      if(!q){
+        cards.forEach(c => set(c,false));
+        events.forEach(e => set(e,false));
+        $("#searchHint").innerHTML = "试试输入：<b>自习</b>、<b>社团</b>、<b>晚风</b> 或 <b>食堂</b>。下面的卡片会高亮匹配内容。";
+        return;
+      }
+
+      let hits = 0;
+      cards.forEach(c => {
+        const tags = (c.getAttribute("data-tags") || "").toLowerCase();
+        const text = (c.innerText || "").toLowerCase();
+        const hit = tags.includes(q) || text.includes(q);
+        set(c, hit);
+        if(hit) hits++;
+      });
+
+      events.forEach(e => {
+        const tags = (e.getAttribute("data-tags") || "");
+        const hit = tags.includes(q);
+        set(e, hit);
+        if(hit) hits++;
+      });
+
+      $("#searchHint").innerHTML = `已为你高亮匹配 <b>${q}</b> 的内容：共 <b>${hits}</b> 处。`;
+    }
+
+    function randomTip(){
+      const tip = tips[Math.floor(Math.random() * tips.length)];
+      const box = document.createElement("div");
+      box.style.position = "fixed";
+      box.style.left = "50%";
+      box.style.bottom = "18px";
+      box.style.transform = "translateX(-50%)";
+      box.style.padding = "12px 14px";
+      box.style.maxWidth = "min(720px, calc(100% - 24px))";
+      box.style.borderRadius = "16px";
+      box.style.background = "rgba(15,23,51,.88)";
+      box.style.border = "1px solid rgba(38,48,90,.8)";
+      box.style.boxShadow = "0 18px 60px rgba(0,0,0,.55)";
+      box.style.backdropFilter = "blur(12px)";
+      box.style.color = "rgba(232,236,255,.95)";
+      box.style.fontSize = "13px";
+      box.style.lineHeight = "1.6";
+      box.style.zIndex = "100";
+      box.innerHTML = `<b style="color:#c9fff1">校园小贴士</b>：${tip} <span style="opacity:.65">（点击关闭）</span>`;
+      box.addEventListener("click", () => box.remove());
+      document.body.appendChild(box);
+      setTimeout(() => box.remove(), 6500);
+    }
+
+    function smoothAnchors(){
+      $$('a[href^="#"]').forEach(a => {
+        a.addEventListener("click", (e) => {
+          const id = a.getAttribute("href");
+          if(!id || id.length < 2) return;
+          const target = document.querySelector(id);
+          if(target){
+            e.preventDefault();
+            target.scrollIntoView({behavior:"smooth", block:"start"});
+          }
+        });
+      });
+    }
+
+    // init
+    let eventsList = [...baseEvents];
+    renderEvents(eventsList);
+    renderGallery();
+    smoothAnchors();
+    $("#year").textContent = new Date().getFullYear();
+
+    $("#searchInput").addEventListener("input", (e) => setHighlight(e.target.value));
+    $("#randomTipBtn").addEventListener("click", randomTip);
+
+    $("#addEventBtn").addEventListener("click", () => {
+      const remaining = extraEventPool.filter(x => !eventsList.some(e => e.title === x.title));
+      const pick = remaining.length ? remaining[Math.floor(Math.random()*remaining.length)] : null;
+      if(!pick){
+        randomTip();
+        return;
+      }
+      eventsList = [pick, ...eventsList];
+      renderEvents(eventsList);
+      setHighlight($("#searchInput").value);
+    });
+
+    $("#resetEventBtn").addEventListener("click", () => {
+      eventsList = [...baseEvents];
+      renderEvents(eventsList);
+      setHighlight($("#searchInput").value);
+    });
+
+    // modal controls
+    $("#closeModalBtn").addEventListener("click", closeModal);
+    $("#modal").addEventListener("click", (e) => {
+      if(e.target.id === "modal") closeModal();
+    });
+    document.addEventListener("keydown", (e) => {
+      if(e.key === "Escape") closeModal();
+    });
+  </script>
+</body>
+</html>
